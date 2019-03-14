@@ -40,7 +40,7 @@ public class DynamicEnumUtil {
         addEnum(c, fields, new Class<?>[] {}, new Object[] {});
     }
 
-    public static <T> void addEnum(Class enumType, String[] enumNames , Class<?>[] paramClass, Object[] paramValue) {
+    public static <T> void addEnum(Class enumType, String[] enumValues , Class<?>[] paramClass, Object[] paramValue) {
         // 0. Sanity checks
         if (!Enum.class.isAssignableFrom(enumType)) {
             throw new RuntimeException("class " + enumType + " is not an instance of Enum");
@@ -57,14 +57,14 @@ public class DynamicEnumUtil {
         }
         AccessibleObject.setAccessible(new Field[] { valuesField }, true);
         try {
-            for (String enumName : enumNames) {
-                enumName = enumName.trim().toUpperCase();
+            for (String enumValue : enumValues) {
+                enumValue = enumValue.trim().toUpperCase();
                 // 2. Copy it
                 T[] previousValues = (T[]) valuesField.get(enumType);
                 List<T> values = new ArrayList<T>(Arrays.asList(previousValues));
                 // 3. build new enum
                 T newValue = (T) makeEnum(enumType, // The target enum class
-                        enumName, // THE NEW ENUM INSTANCE TO BE DYNAMICALLY ADDED
+                        enumValue, // THE NEW ENUM INSTANCE TO BE DYNAMICALLY ADDED
                         values.size(),
                         // new Class<?>[] {}, // could be used to pass values to the enum constuctor if needed
                         paramClass,
@@ -86,7 +86,7 @@ public class DynamicEnumUtil {
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Enum<?>> void addEnum(Class<T> enumType, String enumName,Class<?>[] paramClass,Object[] paramValue) {
+    public static <T extends Enum<?>> void addEnum(Class<T> enumType, String enumValue,Class<?>[] paramClass,Object[] paramValue) {
 
         // 0. Sanity checks
         if (!Enum.class.isAssignableFrom(enumType)) {
@@ -112,7 +112,7 @@ public class DynamicEnumUtil {
 
             // 3. build new enum
             T newValue = (T) makeEnum(enumType, // The target enum class
-                    enumName, // THE NEW ENUM INSTANCE TO BE DYNAMICALLY ADDED
+                    enumValue, // THE NEW ENUM INSTANCE TO BE DYNAMICALLY ADDED
                     values.size(),
                     //new Class<?>[] {}, // could be used to pass values to the enum constuctor if needed
                     paramClass,
