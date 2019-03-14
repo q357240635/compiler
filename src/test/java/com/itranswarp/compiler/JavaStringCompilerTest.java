@@ -112,4 +112,42 @@ public class JavaStringCompilerTest {
 		Object obj = clzMul.newInstance();
 		assertNotNull(obj);
 	}
+	static final String ENUM_JAVA = "package com.itranswarp.compiler;\n" +
+			"\n" +
+			"public enum WeekDay {\n" +
+			"\n" +
+			"    Mon(\"Monday\"), Tue(\"Tuesday\"), Wed(\"Wednesday\"), Thu(\"Thursday\"), Fri( \"Friday\"), Sat(\"Saturday\"), Sun(\"Sunday\");\n" +
+			"    private final String day;\n" +
+			"    private WeekDay(String day) {\n" +
+			"        this.day = day;\n" +
+			"    }\n" +
+			"    public static void printDay(int i){\n" +
+			"        switch(i){\n" +
+			"            case 1: System.out.println(WeekDay.Mon); break;\n" +
+			"            case 2: System.out.println(WeekDay.Tue);break;\n" +
+			"            case 3: System.out.println(WeekDay.Wed);break;\n" +
+			"            case 4: System.out.println(WeekDay.Thu);break;\n" +
+			"            case 5: System.out.println(WeekDay.Fri);break;\n" +
+			"            case 6: System.out.println(WeekDay.Sat);break;\n" +
+			"            case 7: System.out.println(WeekDay.Sun);break;\n" +
+			"            default:System.out.println(\"wrong number!\");\n" +
+			"        }\n" +
+			"    }\n" +
+			"    public String getDay() {\n" +
+			"        return day;\n" +
+			"    }\n" +
+			"}\n";
+
+	@Test
+	public void testCompileENUM() throws Exception {
+		Map<String, byte[]> results = compiler.compile("WeekDay.java", ENUM_JAVA);
+		assertEquals(1, results.size());
+		assertTrue(results.containsKey("com.itranswarp.compiler.WeekDay"));
+		Class<?> clzMul = compiler.loadClass("com.itranswarp.compiler.WeekDay", results);
+		// try instance:
+		//Object obj = clzMul.newInstance();
+		//assertNotNull(obj);
+		System.out.print("=================================");
+		WeekDay.printDay(7);
+	}
 }
