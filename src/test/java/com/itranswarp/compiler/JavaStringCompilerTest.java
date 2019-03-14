@@ -138,16 +138,23 @@ public class JavaStringCompilerTest {
 			"    }\n" +
 			"}\n";
 
-	@Test
+
+    /**
+     * 枚举修改不了
+     * @throws Exception
+     */
+    @Test
 	public void testCompileENUM() throws Exception {
 		Map<String, byte[]> results = compiler.compile("WeekDay.java", ENUM_JAVA);
 		assertEquals(1, results.size());
 		assertTrue(results.containsKey("com.itranswarp.compiler.WeekDay"));
-		Class<?> clzMul = compiler.loadClass("com.itranswarp.compiler.WeekDay", results);
+		Class<WeekDay> clzMul = (Class<WeekDay>) compiler.loadClass("com.itranswarp.compiler.WeekDay", results);
+        WeekDay WeekDay = clzMul.newInstance();
 		// try instance:
 		//Object obj = clzMul.newInstance();
 		//assertNotNull(obj);
 		System.out.print("=================================");
 		WeekDay.printDay(7);
+        WeekDay.printDay(5);
 	}
 }
